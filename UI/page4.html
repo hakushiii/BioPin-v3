@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Control</title>
+</head>
+<body>
+    <button id="up">Up</button>
+    <button id="down">Down</button>
+    <button id="left">Left</button>
+    <button id="right">Right</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('button');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const direction = this.id;
+                    sendDirection(direction);
+                });
+            });
+
+            function sendDirection(direction) {
+                const data = { direction: direction };
+
+                // Convert the data to JSON and store in sessionStorage
+                sessionStorage.setItem('directions', JSON.stringify(data));
+
+                console.log('Direction sent successfully', data);
+            }
+        });
+    </script>
+</body>
+</html>
