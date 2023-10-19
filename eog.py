@@ -47,8 +47,6 @@ model = torch.load('model_overall.pt')
 # EVALUATE MODEL
 model.eval()
 
-# COMMANDS
-
 class Headwear:
     """
     A Professor X headwear
