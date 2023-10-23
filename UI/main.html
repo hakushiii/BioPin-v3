@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add Bootstrap CSS from CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style3.css">
+    <title>Biopin Dashboard</title>
+    <style>
+        .custom-button {
+            width: 80%;
+            height: 80%;
+        }
+
+        .button-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-dark">
+    <!-- Use Bootstrap's container class -->
+    <div class="container mt-4">
+        <header class="bg-dark text-white text-center py-4 mb-4">
+            <h1>BIOPIN</h1>
+        </header>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <button class="btn btn-primary btn-block the-button-main custom-button" onclick="redirectToPage('eog.html')">
+                    <div class="button-content">
+                        <img src="D:\BioPin\UI\icons\eye.png" alt="EOG Signals" class="img-fluid">
+                        <span>EOG Signals</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <button class="btn btn-primary btn-block the-button-main custom-button" onclick="redirectToPage('eeg.html')">
+                    <div class="button-content">
+                        <img src="D:\BioPin\UI\icons\eeg.png" alt="EEG Signals" class="img-fluid">
+                        <span>EEG Signals</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <button class="btn btn-primary btn-block the-button-main custom-button" onclick="redirectToPage('pwm.html')">
+                    <div class="button-content">
+                        <img src="D:\BioPin\UI\icons\power.png" alt="Speed" class="img-fluid">
+                        <span>Speed</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <button class="btn btn-primary btn-block the-button-main custom-button" onclick="redirectToPage('control.html')">
+                    <div class="button-content">
+                        <img src="image4.jpg" alt="Remote Control" class="img-fluid">
+                        <span>Remote Control</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <button class="btn btn-primary btn-block the-button-main custom-button" onclick="redirectToPage('direction.html')">
+                    <div class="button-content">
+                        <img src="D:\BioPin\UI\icons\direction.png" alt="Direction" class="img-fluid">
+                        <span>Direction</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <button class="btn btn-primary btn-block the-button-main custom-button" onclick="redirectToPage('help.html')">
+                    <div class="button-content">
+                        <img src="D:\BioPin\UI\icons\about.png" alt="About" class="img-fluid">
+                        <span>About</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Include this script to handle redirection -->
+    <script>
+        function redirectToPage(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>
