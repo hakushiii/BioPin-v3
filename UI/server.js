@@ -1,33 +1,69 @@
 const express = require('express');
 const fs = require('fs');
-
 const app = express();
-const port = 3000;
+const path = require('path');
+const port = 3000; // You can change this port if needed
 
-app.use(express.static('public'));
+app.use(express.json());
 
-app.post('/save', express.json(), (req, res) => {
-    const data = req.body;
-    const filename = 'public/sliderData.json';
+app.post('/saveData', (req, res) => {
+    const rangeValue = req.body.rangeValue;
 
-    // Read the existing file content
-    let existingData = [];
+    // Load existing data from JSON file
+    let data = [];
     try {
-        existingData = JSON.parse(fs.readFileSync(filename));
+        const rawData = fs.readFileSync('data.json');
+        data = JSON.parse(rawData);
     } catch (error) {
-        // File doesn't exist or is not valid JSON
+        console.error('Error reading data from file:', error.message);
     }
 
-    // Append or overwrite data
-    existingData.push(data);
+    // Add new data
+    data = {
+        speed: rangeValue
+    };
 
-    // Write the updated content back to the file
-    fs.writeFileSync(filename, JSON.stringify(existingData, null, 2));
+    // Save data back to JSON file
+    try {
+        fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+        console.log('Data saved successfully.');
+    } catch (error) {
+        console.error('Error writing data to file:', error.message);
+    }
 
-    res.sendStatus(200);
+    res.send('Data saved successfully.');
 });
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'main.html'));
+});
+
+app.get('/pwm', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'pwm.html'));
+});
+
+app.get('/eog', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'eog.html'));
+});
+
+app.get('/eeg', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'eeg.html'));
+});
+
+app.get('/control', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'control.html'));
+});
+
+app.get('/direction', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'direction.html'));
+});
+
+app.get('/help', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+
+
 
 app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+    console.log(`Server is running at http://localhost:${port}`);
 });
-s
