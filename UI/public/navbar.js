@@ -14,7 +14,7 @@ function createNavbar() {
 
   // Create an image element for the logo
   const logoImage = document.createElement('img');
-  logoImage.src = './icons/biopin_logo2.png';
+  logoImage.src = 'icons/biopin_logo2.png';
   logoImage.alt = 'Logo'; // Add alternative text for accessibility
 
   // Set the width and height attributes for resizing

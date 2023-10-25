@@ -2,15 +2,27 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 const path = require('path');
-const port = 3000; // You can change this port if needed
+const port = 3000;
 
 app.use(express.json());
 
-app.post('/saveData', (req, res) => {
-    const rangeValue = req.body.rangeValue;
+app.use(express.static(path.join(__dirname, 'public')));
 
-    // Load existing data from JSON file
-    let data = [];
+app.get('/getData2', (req, res) => {
+    try {
+        const rawData = fs.readFileSync('data2.json');
+        const data2 = JSON.parse(rawData);
+        res.json(data2);
+    } catch (error) {
+        console.error('Error reading data from file:', error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.post('/saveData', (req, res) => {
+    const { direction, combinedValues } = req.body;
+
+    let data = {};
     try {
         const rawData = fs.readFileSync('data.json');
         data = JSON.parse(rawData);
@@ -18,12 +30,14 @@ app.post('/saveData', (req, res) => {
         console.error('Error reading data from file:', error.message);
     }
 
-    // Add new data
-    data = {
-        speed: rangeValue
-    };
+    if (direction) {
+        data.direction = direction;
+    }
 
-    // Save data back to JSON file
+    if (combinedValues) {
+        data.combinedValues = combinedValues;
+    }
+
     try {
         fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
         console.log('Data saved successfully.');
@@ -31,15 +45,16 @@ app.post('/saveData', (req, res) => {
         console.error('Error writing data to file:', error.message);
     }
 
-    res.send('Data saved successfully.');
+    res.json({ message: 'Data saved successfully.' });
 });
 
+//Routes
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'main.html'));
 });
 
 app.get('/pwm', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'pwm.html'));
+    res.sendFile(path.join(__dirname, 'public', 'test.html'));
 });
 
 app.get('/eog', (req, res) => {
@@ -51,7 +66,7 @@ app.get('/eeg', (req, res) => {
 });
 
 app.get('/control', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'control.html'));
+    res.sendFile(path.join(__dirname, 'public', 'test2.html'));
 });
 
 app.get('/direction', (req, res) => {
