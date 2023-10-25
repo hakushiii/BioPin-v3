@@ -107,22 +107,22 @@ def commandFunction(eog, eeg):
                 return result, command
 
 if __name__ == '__main__':
-    eog = serial.Serial('/dev/tty.usbserial-1110', 9600, timeout=1)
-    eeg = eg.Headwear('/dev/tty.usbmodem2017_2_251')
-    #mtr = serial.Serial('/dev/tty.usbmodem11201', 9600, timeout=1)
+    eog = serial.Serial('/dev/rfcomm0', 9600)
+    eeg = eg.Headwear('/dev/rfcomm1')
+    mtr = serial.Serial('/dev/ttyACM0', 9600)
 
     while True:
 
-        f = open('data.json')
-        data = json.load
-        speed = data['speed']
+        f = open('UI/data.json')
+        data = json.load(f)
+        speed = int(data['combinedValues'])
 
         result, command = commandFunction(eog, eeg)
 
         command_new = str(command) + ':' + speed
 
         print('EOG:', f'{result.item():.2f} | ', 'ATTENTION: ', f'{eeg.attention:2d} | ','COMMANND: ', command, f'|| {command_new}')
-        #try:
-        #    mtr.write(str(command).encode('utf-8'))
-        #except KeyboardInterrupt:
-        #    mtr.write('0'.encode('utf-8'))
+        try:
+            mtr.write(str(command).encode('utf-8'))
+        except KeyboardInterrupt:
+            mtr.write('0:0'.encode('utf-8'))
