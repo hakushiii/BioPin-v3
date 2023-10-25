@@ -2,6 +2,7 @@
 
 import serial
 import numpy as np
+import json
 import torch
 import collections
 
@@ -106,14 +107,15 @@ def commandFunction(eog, eeg):
                 return result, command
 
 if __name__ == '__main__':
-
-    speed = '100'
-
     eog = serial.Serial('/dev/tty.usbserial-1110', 9600, timeout=1)
     eeg = eg.Headwear('/dev/tty.usbmodem2017_2_251')
     #mtr = serial.Serial('/dev/tty.usbmodem11201', 9600, timeout=1)
 
     while True:
+
+        f = open('data.json')
+        data = json.load
+        speed = data['speed']
 
         result, command = commandFunction(eog, eeg)
 
