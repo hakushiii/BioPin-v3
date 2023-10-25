@@ -2,7 +2,7 @@
 function createNavbar() {
   // Create navbar element
   const navbar = document.createElement('nav');
-  navbar.classList.add('navbar', 'navbar-expand-lg', 'navbar-dark','bg-dark', 'shadow-sm');
+  navbar.classList.add('navbar', 'navbar-expand-sm', 'navbar-dark','bg-dark', 'shadow-sm', 'pt-1', 'pb-1');
 
   // Create container for navbar content
   const container = document.createElement('div');
@@ -18,8 +18,8 @@ function createNavbar() {
   logoImage.alt = 'Logo'; // Add alternative text for accessibility
 
   // Set the width and height attributes for resizing
-  logoImage.width = 50;
-  logoImage.height = 50;
+  logoImage.width = 40;
+  logoImage.height = 40;
 
 
   // Add the image to the logo
