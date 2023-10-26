@@ -53,8 +53,8 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'main.html'));
 });
 
-app.get('/pwm', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'test.html'));
+app.get('/speed', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'speed.html'));
 });
 
 app.get('/eog', (req, res) => {
@@ -74,7 +74,7 @@ app.get('/direction', (req, res) => {
 });
 
 app.get('/help', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+    res.sendFile(path.join(__dirname, 'public', 'help.html'));
 });
 
 
