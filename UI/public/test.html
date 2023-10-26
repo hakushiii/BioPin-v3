@@ -63,11 +63,11 @@
         }
 
         .custom-btn {
-            margin-top: 1em;
+            margin-top: 1px;
             background-color: #21d99b;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
             margin-bottom: 3px;
@@ -88,9 +88,9 @@
     </script>
 
     <div class="d-flex align-items-center justify-content-center">
-        <div class="container custom-container border text-center p-3 mt-4 m-3">
-            <h1 >Set Speed</h1>
-            <div class="container-fluid mt-4 d-flex justify-content-center align-items-center ">
+        <div class="container custom-container border text-center p-2 mt-3 m-3">
+            <h1 style="font-size: 1.2rem;">Set Speed</h1>
+            <div class="container-fluid mt-2 d-flex justify-content-center align-items-center ">
                 <div class="custom-num">
                     <i class="fas fa-angle-up arr-up"></i>
                     <input
@@ -133,6 +133,7 @@
             <button class="custom-btn" id="saveSettingsBtn">Save Settings</button>
         </div>
     </div>  
+
     <script>
         const customNum = document.querySelectorAll('.custom-num');
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
