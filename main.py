@@ -104,7 +104,7 @@ def commandFunction(eog, eeg):
                     timer = 0
                     command = 0
                 
-                return result, command
+                return queue_numpy, result, command
 
 if __name__ == '__main__':
     eog = serial.Serial('/dev/rfcomm0', 9600)
@@ -113,11 +113,22 @@ if __name__ == '__main__':
 
     while True:
 
+        queue, result, command = commandFunction(eog, eeg)
+
         f = open('data.json')
         data = json.load
         speed = data['speed']
+        f.close()
 
-        result, command = commandFunction(eog, eeg)
+        to_json = {
+            'array': queue
+        }
+        json_object = json.dumps(to_json)
+
+        with open('UI/eog.json', 'w') as f:
+            f.write(json_object)
+            f.close()
+
         command_new = str(command) + ':' + speed
 
         if command == 1:
