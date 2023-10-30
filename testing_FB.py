@@ -152,8 +152,6 @@ if __name__ == '__main__':
             else:
                 direction = 'No Command'
 
-            print(queue)
-
             if direction != 'No Command':
                 data.append(count)
                 data.append(get_time_HMS())
