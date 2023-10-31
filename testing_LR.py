@@ -5,10 +5,15 @@ import numpy as np
 import json
 import torch
 import collections
+from datetime import datetime
+import time, csv, os
+
+import matplotlib.pyplot as plt
+from random import randint
 
 import eeg as eg
 
-from random import randint
+speed = 100
 
 # MODEL
 class ProfessorXModel(torch.nn.Module):
@@ -47,7 +52,7 @@ class ProfessorXModel(torch.nn.Module):
 
 
 # LOAD TRAINED MODEL
-model = torch.load('model_overall.pt')
+model = torch.load('Model/model_overall.pt')
 
 # EVALUATE MODEL
 model.eval()
@@ -67,7 +72,7 @@ def commandFunction(eog, eeg):
         try:
             output = val.decode('UTF-8').rstrip()
             output = float(output)
-            output = output * 10
+            output = output * 20
         except ValueError:
             output = 0.00
 
@@ -82,29 +87,40 @@ def commandFunction(eog, eeg):
             with torch.inference_mode():
                 result = model(queue_tensor)
 
-            while checker == 0:
-
+            if checker == 0:
                 if result.item() >= 0.7:
                     checker = 1
                     command = 3
                 if result.item() <= 0.3:
                     checker = 1
                     command = 2
-                if eeg.attention >= tresh_attention:
-                    checker = 1
-                    command = 1
-                if eeg.attention < tresh_attention:
-                    checker = 1
-
-            while checker == 1:
+                #if eeg.attention >= tresh_attention:
+                #    checker = 1
+                #    command = 1
+                #if eeg.attention < tresh_attention:
+                #    checker = 1
+            
+            timer=0
+            if checker == 1:
                 timer+=1
-
                 if timer >= 3000:
+                    command = 0
                     checker = 0
                     timer = 0
-                    command = 0
-                
-                return queue_numpy, result, command
+
+
+            return queue_numpy, result, command
+
+def get_time_HM():
+
+    now = datetime.now()
+    return now.strftime('%H.%M')
+
+def get_time_HMS():
+
+    now = datetime.now()
+    return now.strftime('%H:%M:%S')
+
 
 if __name__ == '__main__':
 
@@ -115,50 +131,45 @@ if __name__ == '__main__':
     model.eval()
 
     eog = serial.Serial('/dev/rfcomm0', 9600)
-    eeg = eg.Headwear('/dev/rfcomm1')
-    mtr = serial.Serial('/dev/ttyACM0', 9600)
+    #eeg = eg.Headwear('/dev/rfcomm1')
 
-    while True:
-        queue, result, command = commandFunction(eog, eeg)
+    eog = 1
+    eeg = 1
 
-        if command == 1:
-            direction = 'Forward'
-        if command == 2:
-            direction = 'Rightward'
-        if command == 3:
-            direction = 'Leftward'
-        if command == 4:
-            direction = 'Backward'
-        else:
-            direction = 'No Command'
+    start_time = get_time_HM()
 
-        command_new = str(command) + ':' + speed
+    with open(f'EOG {start_time}.csv','w') as f:
+        header = ['ITERATION','TIME','ARRAY','OUTPUT COMMAND']
+        writer = csv.writer(f, delimiter=',', lineterminator='\n')
+        writer.writerow(header)
 
-        f = open('data.json')
-        data = json.load
-        speed = data['speed']
-        f.close()
+        count = 1
+        while True:
+            data = []
 
-        to_json = {
-            'array': queue
-        }
-        json_object = json.dumps(to_json)
+            queue, result, command = commandFunction(eog, eeg)
 
-        with open('UI/eog.json', 'w') as f:
-            f.write(json_object)
-            f.close()
+            if command == 1:
+                direction = 'Forward'
+            elif command == 2:
+                direction = 'Rightward'
+            elif command == 3:
+                direction = 'Leftward'
+            elif command == 4:
+                direction = 'Backward'
+            else:
+                direction = 'No Command'
 
-        to_json = {
-            'direction': direction
-        }
-        json_object = json.dumps(to_json)
-        
-        with open('UI/direction.json', 'w') as f:
-            f.write(json_object)
-            f.close()
+            if direction != 'No Command':
+                data.append(count)
+                data.append(get_time_HMS())
+                data.append(f'{count}.jpg')
+                data.append(direction)
+                writer.writerow(data)
+                plt.plot(queue)
+                plt.savefig(f'Graphs/{count}.jpg')
+                plt.clf()
+                print(data)
+                count+=1
 
-        print('EOG:', f'{result.item():.2f} | ', 'ATTENTION: ', f'{eeg.attention:2d} | ',f'COMMANND: {command} : {speed}', f'|| {direction}')
-        try:
-            mtr.write(str(command).encode('utf-8'))
-        except KeyboardInterrupt:
-            mtr.write('0'.encode('utf-8'))
+            #print('EOG:', f'{result.item():.2f} | ', 'ATTENTION: ', f'{eeg.attention:2d} | ', f'|| {direction}')
