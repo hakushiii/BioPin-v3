@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+
+
+        /**.container {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        } **/
+
+        .custom-container {
+            width: 80%; /* You can adjust the percentage as needed */
+            max-width: 600px; /* You can also set a maximum width */
+            }
+
+
+        .custom-num {
+            margin: 1em;
+            color: #1b1c23;
+            display: flex;
+            width: 3em;
+            height: 7em;
+            border: 2px #1b1c23 solid;
+            border-radius: 3em;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+
+        .num-input::-webkit-inner-spin-button,
+        .num-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0; 
+        }
+
+        .num-input {
+            font-size: 1.5em;
+            text-align: center;
+            background: none;
+            border: none;
+            color: #21d99b;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .num-input:focus {
+            outline: none;
+        }
+
+        .custom-num i {
+            font-size: 2em;
+            cursor: pointer;
+        }
+
+        .custom-btn {
+            margin-top: 1px;
+            background-color: #21d99b;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 3px;
+        }
+    </style>
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>       
+
+    <script src="navbar.js"></script>
+       
+    <script>    
+        createNavbar();
+    </script>
+
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="container custom-container border text-center p-2 mt-3 m-3">
+            <h1 style="font-size: 1.2rem;">Set Speed</h1>
+            <div class="container-fluid mt-2 d-flex justify-content-center align-items-center ">
+                <div class="custom-num">
+                    <i class="fas fa-angle-up arr-up"></i>
+                    <input
+                        type="number"
+                        class="num-input"
+                        min="0"
+                        max="2"
+                        value="0"
+                        data-color="#21d99b"
+                    />
+                    <i class="fas fa-angle-down arr-down"></i>  
+                </div>
+
+                <div class="custom-num">
+                    <i class="fas fa-angle-up arr-up"></i>
+                    <input
+                        type="number"
+                        class="num-input"
+                        min="0"
+                        max="9"
+                        value="5"
+                        data-color="#21d99b"
+                    />
+                    <i class="fas fa-angle-down arr-down"></i>  
+                </div>
+
+                <div class="custom-num">
+                    <i class="fas fa-angle-up arr-up"></i>
+                    <input
+                        type="number"
+                        class="num-input"
+                        min="0"
+                        max="9"
+                        value="0"
+                        data-color="#21d99b"
+                    />
+                    <i class="fas fa-angle-down arr-down"></i>  
+                </div>
+            </div>
+            <button class="custom-btn" id="saveSettingsBtn">Save Settings</button>
+        </div>
+    </div>  
+
+    <script>
+        const customNum = document.querySelectorAll('.custom-num');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+
+        // Load values from localStorage on page load
+        window.addEventListener('load', () => {
+            customNum.forEach((num, index) => {
+                const numInput = num.querySelector('.num-input');
+                const savedValue = localStorage.getItem(`numInput${index + 1}`);
+                if (savedValue !== null) {
+                    numInput.value = savedValue;
+                    checkMaxMin(num, numInput);
+                }
+            });
+        });
+
+        customNum.forEach((num, index) => {
+            const numInput = num.querySelector('.num-input');
+            const arrUp = num.querySelector('.arr-up');
+            const arrDown = num.querySelector('.arr-down');
+
+            arrUp.addEventListener('click', () => {
+                numInput.stepUp();
+                checkMaxMin(num, numInput);
+            });
+
+            arrDown.addEventListener('click', () => {
+                numInput.stepDown();
+                checkMaxMin(num, numInput);
+            });
+
+            numInput.addEventListener('input', () => {
+                checkMaxMin(num, numInput);
+                saveToLocalStorage(index + 1, numInput.value);
+            });
+
+            function checkMaxMin(num, numInput) {
+                const numInputValue = parseInt(numInput.value);
+                const numInputMax = parseInt(numInput.max);
+                const numInputMin = parseInt(numInput.min);
+
+                if (numInputValue === numInputMax) {
+                    num.style.paddingTop = "0.8em";
+                    num.style.height = "5em";
+                    arrUp.style.display = "none";
+                    num.style.paddingBottom = "0";
+                    arrDown.style.display = "block";
+                } else if (numInputValue === numInputMin) {
+                    num.style.paddingBottom = "0.8em";
+                    num.style.height = "5em";
+                    arrDown.style.display = "none";
+                    num.style.paddingTop = "0";
+                    arrUp.style.display = "block";
+                } else {
+                    num.style.padding = "0";
+                    num.style.height = "7em";
+                    arrUp.style.display = "block";
+                    arrDown.style.display = "block";
+                }
+            }
+
+            function saveToLocalStorage(key, value) {
+                localStorage.setItem(`numInput${key}`, value);
+            }
+        });
+
+        saveSettingsBtn.addEventListener('click', () => {
+            let combinedValues = '';
+            customNum.forEach((num, index) => {
+                const numInput = num.querySelector('.num-input');
+                combinedValues += numInput.value;
+            });
+
+            if (parseInt(combinedValues) > 255 || parseInt(combinedValues) < 1) {
+                alert('Combined value must be between 1 and 255.');
+            } else {
+                console.log('Combined values:', combinedValues);
+                // You can use combinedValues as needed, for example, save it to a database.
+
+                // Send combinedValues to the server
+                fetch('http://localhost:3000/saveData', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ combinedValues }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Server response:', data);
+                })
+                .catch(error => {
+                    console.error('Error sending data to server:', error);
+                });
+            }
+        });
+
+        
+    </script>
+</body>
+</html>

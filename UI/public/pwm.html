@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Speed</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <style>
+        .custom-container {
+            border: 1px solid #ddd;
+            padding: 20px;
+        }
+        #rangeSlider {
+            width: 80%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+        #rangeValue {
+            width: 20%;
+            text-align: center;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            margin-top: 70px;  
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Include the script file -->
+    <script src="navbar.js"></script>
+
+    <!-- Call the createNavbar function -->
+    <script>
+        // Call the createNavbar() function to generate the navbar
+        createNavbar();
+    </script>
+
+    <div class="container custom-container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1>Set Speed</h1>
+
+                <!-- Set the range from 0 to 255 -->
+                <input type="text" class="form-control" id="rangeValue">
+                <input type="range" class="form-control-range" id="rangeSlider" min="0" max="255" value="127">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js scripts (order is important) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script>
+        // Your JavaScript code remains unchanged
+        var rangeSlider = document.getElementById("rangeSlider");
+        var rangeValue = document.getElementById("rangeValue");
+
+        var savedValue = localStorage.getItem("sliderValue");
+        rangeSlider.value = savedValue !== null ? savedValue : rangeSlider.value;
+        rangeValue.value = rangeSlider.value;
+
+        rangeSlider.addEventListener("input", function() {
+            rangeValue.value = rangeSlider.value;
+            localStorage.setItem("sliderValue", rangeSlider.value);
+            sendDataToServer(rangeSlider.value); // Send data to the server
+        });
+
+        rangeValue.addEventListener("input", function() {
+            var value = parseInt(rangeValue.value);
+            if (isNaN(value)) {
+                value = 0;
+            } else if (value < parseInt(rangeSlider.min)) {
+                value = parseInt(rangeSlider.min);
+            } else if (value > parseInt(rangeSlider.max)) {
+                value = parseInt(rangeSlider.max);
+            }
+
+            rangeSlider.value = value;
+            localStorage.setItem("sliderValue", value);
+            sendDataToServer(value); // Send data to the server
+        });
+
+        // Function to send data to the local server
+        function sendDataToServer(value) {
+            fetch('http://localhost:3000/saveData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ rangeValue: value }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error sending data to server:', error.message);
+                });
+        }
+
+    </script>
+
+</body>
+</html>

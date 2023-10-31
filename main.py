@@ -116,10 +116,9 @@ if __name__ == '__main__':
 
     eog = serial.Serial('/dev/rfcomm0', 9600)
     eeg = eg.Headwear('/dev/rfcomm1')
-    #mtr = serial.Serial('/dev/ttyACM0', 9600)
+    mtr = serial.Serial('/dev/ttyACM0', 9600)
 
     while True:
-
         queue, result, command = commandFunction(eog, eeg)
 
         if command == 1:
@@ -159,7 +158,7 @@ if __name__ == '__main__':
             f.close()
 
         print('EOG:', f'{result.item():.2f} | ', 'ATTENTION: ', f'{eeg.attention:2d} | ',f'COMMANND: {command} : {speed}', f'|| {direction}')
-        #try:
-        #    mtr.write(str(command).encode('utf-8'))
-        #except KeyboardInterrupt:
-        #    mtr.write('0'.encode('utf-8'))
+        try:
+            mtr.write(str(command).encode('utf-8'))
+        except KeyboardInterrupt:
+            mtr.write('0'.encode('utf-8'))
