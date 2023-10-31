@@ -31,7 +31,7 @@
     <div class="container border rounded mt-3">
         <div class="text-center mt-3">
             <h1 style="font-size: 1.2rem;">Wheelchair Direction</h1>
-            <div id="direction-container" class="mt-4 mb-5 pb-3">Command: <span id="direction"></span></div>
+            <div id="direction-container" class="mt-4 mb-5 pb-3">Direction: <span id="direction"></span></div>
         </div>
     </div>
 
@@ -43,7 +43,7 @@
     <!-- Insert the fetchData function here -->
     <script>
         async function fetchData() {
-            const filePath = 'command.json';
+            const filePath = 'direction.json';
 
             try {
                 // Fetch the JSON file
@@ -64,7 +64,7 @@
                 const directionContainer = document.getElementById('direction-container');
                 const directionElement = document.getElementById('direction');
 
-                directionContainer.innerHTML = `Command: <span id="direction">${data.command}</span>`;
+                directionContainer.innerHTML = `Command: <span id="direction">${data.direction}</span>`;
 
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error);
