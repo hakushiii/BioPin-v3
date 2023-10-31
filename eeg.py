@@ -1,4 +1,4 @@
-import serial, threading, time
+import serial, threading
 
 BYTE_CODES = {
     'SYNC': b'\xaa',
