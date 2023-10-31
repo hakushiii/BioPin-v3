@@ -1,5 +1,5 @@
 # IMPORTS
-
+import requests
 import serial
 import numpy as np
 import json
@@ -107,7 +107,6 @@ def commandFunction(eog, eeg):
                 return queue_numpy, result, command
 
 if __name__ == '__main__':
-
     # LOAD TRAINED MODEL
     model = torch.load('Model/model_overall.pt')
     

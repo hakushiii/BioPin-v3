@@ -17,6 +17,13 @@
             background-color: #343a40; /* Adjust the background color as needed */
         }
 
+        .logo-img {
+            max-width: 100%;
+            height: auto;
+            width: 55px; /* Set your desired width */
+            height: 55px; /* Set your desired height */
+        }
+
         .button-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -24,12 +31,19 @@
             margin: 20px;
         }
 
+        .button-grid button.last-button {
+            width: calc((100% - 10px) / 3 * 1.5); /* Set the width to two-thirds of the available space, considering the gap */
+            grid-column: span 2;
+            justify-self: center;
+        }
+
         .custom-button {
-            padding: 15px;
+            padding: 8px;
             text-align: center;
             background-color: #3498db;
             color: #fff;
-            font-size: 16px;
+            font-size: 10px;
+            font-weight: 550;
             border: none;
             cursor: pointer;
         }
@@ -43,8 +57,9 @@
         }
 
         .button-content img {
-            max-width: 100%;
-            height: auto;
+            width: 24px;
+            height: 24px;
+            margin-bottom: 2px;
         }
 
         @media screen and (max-width: 600px) {
@@ -65,14 +80,14 @@
 <body>
     <!-- Use Bootstrap's container class -->
     <div class="container text-center mt-1">
-        <header class="text-white mb-1">
-            <h1>BIOPIN</h1>
+        <header class="mb-1">
+            <img  src="icons/biopin_logo2.png" alt="Biopin Logo" class="img-fluid logo-img">
         </header>
 
         <div class="button-grid">
             <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/eog')">
                 <div class="button-content">
-                    <img src="icons/eye.png" alt="EOG Signals" class="img-fluid">
+                    <img src="icons\eye.png" alt="EOG Signals" class="img-fluid">
                     <span>EOG Signals</span>
                 </div>
             </button>
@@ -84,7 +99,7 @@
                 </div>
             </button>
 
-            <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/pwm')">
+            <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/speed')">
                 <div class="button-content">
                     <img src="icons/power.png" alt="Speed" class="img-fluid">
                     <span>Speed</span>
@@ -98,9 +113,9 @@
                 </div>
             </button>
 
-            <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/help')">
+            <button class="btn btn-primary btn-block custom-button last-button" onclick="redirectToPage('/help')">
                 <div class="button-content">
-                    <img src="icons/about.png" alt="About" class="img-fluid">
+                    <img src="icons/help.png" alt="About" class="img-fluid">
                     <span>About</span>
                 </div>
             </button>
