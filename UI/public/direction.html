@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Direction Display</title>
-    
+
     <!-- Add Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -12,7 +13,8 @@
     <style>
         /* Adjust the container width */
         .container {
-            max-width: 70%; /* You can adjust the percentage as needed */
+            max-width: 70%;
+            /* You can adjust the percentage as needed */
         }
     </style>
 </head>
@@ -23,14 +25,13 @@
 
     <!-- Call the createNavbar function -->
     <script>
-    // Call the createNavbar() function to generate the navbar
         createNavbar();
     </script>
-    
+
     <div class="container border rounded mt-3">
         <div class="text-center mt-3">
             <h1 style="font-size: 1.2rem;">Wheelchair Direction</h1>
-            <div id="direction-container" class="mt-4 mb-5 pb-3">Direction: <span id="direction"></span></div>
+            <div id="direction-container" class="mt-4 mb-5 pb-3">Command: <span id="direction"></span></div>
         </div>
     </div>
 
@@ -39,27 +40,43 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <!-- Insert the fetchData function here -->
     <script>
-        // Array of possible directions
-        var directions = ['left', 'right', 'forward', 'backward'];
+        async function fetchData() {
+            const filePath = 'command.json';
 
-        // Function to get a random direction
-        function getRandomDirection() {
-            var randomIndex = Math.floor(Math.random() * directions.length);
-            return directions[randomIndex];
+            try {
+                // Fetch the JSON file
+                const response = await fetch(filePath);
+
+                // Check if the request was successful (status code 200)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Parse the JSON response
+                const data = await response.json();
+
+                // Now 'data' contains the parsed JSON
+                console.log(data);
+
+                // Display the command in the direction-container
+                const directionContainer = document.getElementById('direction-container');
+                const directionElement = document.getElementById('direction');
+
+                directionContainer.innerHTML = `Command: <span id="direction">${data.command}</span>`;
+
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
         }
 
-        // Function to update the direction on the webpage
-        function updateDirection() {
-            var direction = getRandomDirection();
-            document.getElementById('direction').innerText = direction;
-        }
+        // Call the function to fetch and handle the JSON data initially
+        fetchData();
 
-        // Update direction every 1000 milliseconds (1 second)
-        setInterval(updateDirection, 1000);
-
-        // Initial update
-        updateDirection();
+        // Set up a recurring interval to update the data
+        setInterval(fetchData, 1000); // Update every 1000 milliseconds (1 second)
     </script>
 </body>
+
 </html>

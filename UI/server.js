@@ -6,6 +6,7 @@ const port = 3000;
 
 app.use(express.json());
 
+app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/getData2', (req, res) => {
@@ -47,6 +48,16 @@ app.post('/saveData', (req, res) => {
 
     res.json({ message: 'Data saved successfully.' });
 });
+
+app.post('/storeCommand', express.json(), (req, res) => {
+    const { command } = req.body;
+  
+    // Store the command in a JSON file
+    fs.writeFileSync('command.json', JSON.stringify({ command }));
+  
+    res.send('Command stored successfully.');
+  });
+  
 
 //Routes
 app.get('/', function(req, res) {

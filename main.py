@@ -1,5 +1,5 @@
 # IMPORTS
-
+import requests
 import serial
 import numpy as np
 import torch
@@ -106,20 +106,21 @@ def commandFunction(eog, eeg):
                 return result, command
 
 if __name__ == '__main__':
-
     speed = '100'
 
     eog = serial.Serial('/dev/tty.usbserial-1110', 9600, timeout=1)
     eeg = eg.Headwear('/dev/tty.usbmodem2017_2_251')
-    #mtr = serial.Serial('/dev/tty.usbmodem11201', 9600, timeout=1)
 
     while True:
-
         result, command = commandFunction(eog, eeg)
-
         command_new = str(command) + ':' + speed
 
         print('EOG:', f'{result.item():.2f} | ', 'ATTENTION: ', f'{eeg.attention:2d} | ','COMMANND: ', command, f'|| {command_new}')
+
+        # Send command to the Express server
+        server_url = 'http://localhost:3000/storeCommand'
+        requests.post(server_url, json={'command': command})
+
         #try:
         #    mtr.write(str(command).encode('utf-8'))
         #except KeyboardInterrupt:

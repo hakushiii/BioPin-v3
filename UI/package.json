@@ -5,6 +5,7 @@
   "main": "navbar.js",
   "dependencies": {
     "chart.js": "^4.4.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "momen": "^0.0.1-security",
     "moment": "^2.29.4"
