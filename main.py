@@ -107,6 +107,13 @@ def commandFunction(eog, eeg):
                 return queue_numpy, result, command
 
 if __name__ == '__main__':
+
+    # LOAD TRAINED MODEL
+    model = torch.load('Model/model_overall.pt')
+    
+    # EVALUATE MODEL
+    model.eval()
+
     eog = serial.Serial('/dev/rfcomm0', 9600)
     eeg = eg.Headwear('/dev/rfcomm1')
     #mtr = serial.Serial('/dev/ttyACM0', 9600)
@@ -114,6 +121,19 @@ if __name__ == '__main__':
     while True:
 
         queue, result, command = commandFunction(eog, eeg)
+
+        if command == 1:
+            direction = 'Forward'
+        if command == 2:
+            direction = 'Rightward'
+        if command == 3:
+            direction = 'Leftward'
+        if command == 4:
+            direction = 'Backward'
+        else:
+            direction = 'No Command'
+
+        command_new = str(command) + ':' + speed
 
         f = open('data.json')
         data = json.load
@@ -129,18 +149,14 @@ if __name__ == '__main__':
             f.write(json_object)
             f.close()
 
-        command_new = str(command) + ':' + speed
-
-        if command == 1:
-            direction = 'Forward'
-        if command == 2:
-            direction = 'Rightward'
-        if command == 3:
-            direction = 'Leftward'
-        if command == 4:
-            direction = 'Backward'
-        else:
-            direction = 'No Command'
+        to_json = {
+            'direction': direction
+        }
+        json_object = json.dumps(to_json)
+        
+        with open('UI/direction.json', 'w') as f:
+            f.write(json_object)
+            f.close()
 
         print('EOG:', f'{result.item():.2f} | ', 'ATTENTION: ', f'{eeg.attention:2d} | ',f'COMMANND: {command} : {speed}', f'|| {direction}')
         #try:

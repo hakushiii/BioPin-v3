@@ -96,7 +96,7 @@ def commandFunction(eog, eeg):
                 if eeg.attention >= tresh_attention:
                     checker = 1
                     command = 1
-                if eeg.attention < tresh_attention:
+                if eeg.meditation >= tresh_attention:
                     checker = 1
                 else:
                     command = 0
@@ -123,6 +123,13 @@ def get_time_HMS():
 
 
 if __name__ == '__main__':
+
+    # LOAD TRAINED MODEL
+    model = torch.load('Model/model_overall.pt')
+    
+    # EVALUATE MODEL
+    model.eval()
+
     #eog = serial.Serial('/dev/rfcomm0', 9600)
     eeg = eg.Headwear('/dev/rfcomm1')
 
@@ -130,7 +137,7 @@ if __name__ == '__main__':
 
     start_time = get_time_HM()
 
-    with open(f'{start_time}.csv','w') as f:
+    with open(f'EEG {start_time}.csv','w') as f:
         header = ['ITERATION','TIME','ARRAY','OUTPUT COMMAND']
         writer = csv.writer(f, delimiter=',', lineterminator='\n')
         writer.writerow(header)
@@ -152,6 +159,7 @@ if __name__ == '__main__':
             else:
                 direction = 'No Command'
 
+            print(eeg.attention, '||', eeg.meditation)
             if direction != 'No Command':
                 data.append(count)
                 data.append(get_time_HMS())
