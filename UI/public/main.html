@@ -178,11 +178,16 @@
                 .then(data => {
                     const headgearStatus = data.headgearStatus;
                     const toastBody = document.getElementById('toastBody');
+                    const buttons = document.getElementsByTagName('button');
     
                     if (headgearStatus === 1) {
                         toastBody.innerText = 'Headgear connected.';
                         document.getElementById('headgearToast').classList.add('show');
-    
+
+                        for(var i = 0; i < buttons.length; i++){
+                            buttons[i].disabled = false;
+                        }
+                        
                         // Close the toast automatically after 3 seconds
                         setTimeout(function () {
                             document.getElementById('headgearToast').classList.remove('show');
@@ -191,6 +196,11 @@
                         toastBody.innerText = 'Headgear not connected. Please check connection';
                         document.getElementById('headgearToast').classList.add('show');
                         // Do not close the toast until the headgear becomes connected
+                        for(var i = 0; i < buttons.length; i++){
+                            buttons[i].disabled = true;
+                        }
+
+
     
                         // Continue checking for updates until headgear becomes connected
                         setTimeout(function () {
