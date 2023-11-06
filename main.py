@@ -1,5 +1,5 @@
 # IMPORTS
-
+import requests
 import serial
 import numpy as np
 import json

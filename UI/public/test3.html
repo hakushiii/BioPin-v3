@@ -1,50 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Form with Buttons</title>
+    <style>
+        /* Add your CSS styles for the buttons and form here */
+        #myForm {
+            text-align: center;
+            margin: 50px;
+        }
 
-    .button-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 20px;
-    }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 10px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
 
-    .button {
-      padding: 15px;
-      text-align: center;
-      background-color: #3498db;
-      color: #fff;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-    }
-
-    @media screen and (max-width: 600px) {
-      .button-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  </style>
+        .button-row {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
 
-<div class="button-grid">
-  <button class="button">Button 1</button>
-  <button class="button">Button 2</button>
-  <button class="button">Button 3</button>
-  <button class="button">Button 4</button>
-  <button class="button">Button 5</button>
-  <button class="button">Button 6</button>
-</div>
+<div id="myForm"></div>
+
+<script>
+    // Function to create buttons
+    function createButtons() {
+        // Get the form container
+        var formContainer = document.getElementById('myForm');
+
+        // Create three rows of buttons
+        for (var i = 1; i <= 3; i++) {
+            var buttonRow = document.createElement('div');
+            buttonRow.className = 'button-row';
+
+            // Determine the number of buttons in the current row
+            var numButtons = (i === 3) ? 1 : 2;
+
+            // Create buttons and append them to the current row
+            for (var j = 1; j <= numButtons; j++) {
+                var button = document.createElement('button');
+                button.innerHTML = 'Button ' + (j + (i - 1) * 2);
+                button.className = 'button';
+                buttonRow.appendChild(button);
+            }
+
+            // Append the current row to the form container
+            formContainer.appendChild(buttonRow);
+        }
+    }
+
+    // Call the function to create buttons when the page loads
+    window.onload = createButtons;
+</script>
 
 </body>
 </html>

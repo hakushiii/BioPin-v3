@@ -6,6 +6,7 @@ const port = 3000;
 
 app.use(express.json());
 
+app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/getData2', (req, res) => {
@@ -48,13 +49,23 @@ app.post('/saveData', (req, res) => {
     res.json({ message: 'Data saved successfully.' });
 });
 
+app.post('/storeCommand', express.json(), (req, res) => {
+    const { command } = req.body;
+  
+    // Store the command in a JSON file
+    fs.writeFileSync('command.json', JSON.stringify({ command }));
+  
+    res.send('Command stored successfully.');
+  });
+  
+
 //Routes
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'main.html'));
 });
 
-app.get('/pwm', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'test.html'));
+app.get('/speed', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'speed.html'));
 });
 
 app.get('/eog', (req, res) => {
@@ -74,7 +85,7 @@ app.get('/direction', (req, res) => {
 });
 
 app.get('/help', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+    res.sendFile(path.join(__dirname, 'public', 'help.html'));
 });
 
 
