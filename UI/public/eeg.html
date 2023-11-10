@@ -44,7 +44,7 @@
         //Setup Block
         const data = {
             datasets: [{
-                data: [12, 19, 3, 5, 2, 3],
+                data: [],
                 borderWidth: 1,
                 tension: 0.2
             }]
@@ -61,12 +61,17 @@
                         realtime: {
                             delay: 1000,
                             onRefresh: chart => {
-                                chart.data.datasets.forEach(dataset => {
-                                    dataset.data.push({
-                                        x: Date.now(),
-                                        y: Math.random() * 10
+                                // Fetch data from the JSON file
+                                fetch('eeg.json') // Replace 'your_json_file.json' with the path to your JSON file
+                                    .then(response => response.json())
+                                    .then(jsonData => {
+                                        chart.data.datasets.forEach(dataset => {
+                                            dataset.data.push({
+                                                x: Date.now(),
+                                                y: jsonData.value // Replace 'value' with the actual property in your JSON file
+                                            });
+                                        });
                                     });
-                                });
                             }
                         }
                     },

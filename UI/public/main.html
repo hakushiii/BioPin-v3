@@ -47,24 +47,29 @@
             text-align: center;
             background-color: #3498db;
             color: #fff;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 550;
             border: none;
             cursor: pointer;
         }
 
-        .button-content {
+        /* .button-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100%;
-        }
+        } */
 
         .button-content img {
             width: 24px;
             height: 24px;
             margin-bottom: 2px;
+        }
+
+        .btn:active,
+        .btn:focus {
+            box-shadow: none;
         }
 
         @media screen and (max-width: 600px) {
@@ -173,46 +178,48 @@
         }
     
         function checkHeadgearStatus() {
-            fetch('bluetooth.json')
-                .then(response => response.json())
-                .then(data => {
-                    const headgearStatus = data.headgearStatus;
-                    const toastBody = document.getElementById('toastBody');
-                    const buttons = document.getElementsByTagName('button');
-    
-                    if (headgearStatus === 1) {
-                        toastBody.innerText = 'Headgear connected.';
-                        document.getElementById('headgearToast').classList.add('show');
+        fetch('bluetooth.json')
+            .then(response => response.json())
+            .then(data => {
+                const headgearStatus = data.headgearStatus;
+                const toastBody = document.getElementById('toastBody');
+                const buttons = document.getElementsByTagName('button');
 
-                        for(var i = 0; i < buttons.length; i++){
-                            buttons[i].disabled = false;
-                        }
-                        
-                        // Close the toast automatically after 3 seconds
-                        setTimeout(function () {
-                            document.getElementById('headgearToast').classList.remove('show');
-                        }, 3000);
-                    } else if (headgearStatus === 0) {
-                        toastBody.innerText = 'Headgear not connected. Please check connection';
-                        document.getElementById('headgearToast').classList.add('show');
-                        // Do not close the toast until the headgear becomes connected
-                        for(var i = 0; i < buttons.length; i++){
-                            buttons[i].disabled = true;
-                        }
+                if (headgearStatus === 1 && !toastBody.classList.contains('connected')) {
+                    toastBody.innerText = 'Headgear connected.';
+                    document.getElementById('headgearToast').classList.add('show');
+                    toastBody.classList.add('connected');
 
-
-    
-                        // Continue checking for updates until headgear becomes connected
-                        setTimeout(function () {
-                            checkHeadgearStatus();
-                        }, 1000);
+                    for (var i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = false;
                     }
-                })
-                .catch(error => console.error('Error reading JSON file:', error));
-        }
-    
-        // Call the function to check headgear status when the page is loaded
-        checkHeadgearStatus();
+
+                    // Close the toast automatically after 3 seconds
+                    setTimeout(function () {
+                        document.getElementById('headgearToast').classList.remove('show');
+                    }, 3000);
+                } else if (headgearStatus === 0) {
+                    toastBody.innerText = 'Headgear not connected. Please check connection';
+                    document.getElementById('headgearToast').classList.add('show');
+                    toastBody.classList.remove('connected');
+
+                    // Do not close the toast until the headgear becomes connected
+                    for (var i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                    }
+                }
+            })
+            .catch(error => console.error('Error reading JSON file:', error))
+            .finally(() => {
+                // Continue checking for updates
+                setTimeout(function () {
+                    checkHeadgearStatus();
+                }, 1000);
+            });
+    }
+
+    // Call the function to check headgear status when the page is loaded
+    checkHeadgearStatus();
     </script>
     
 </body>

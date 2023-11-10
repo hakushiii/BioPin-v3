@@ -9,16 +9,6 @@ app.use(express.json());
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/getData2', (req, res) => {
-    try {
-        const rawData = fs.readFileSync('data2.json');
-        const data2 = JSON.parse(rawData);
-        res.json(data2);
-    } catch (error) {
-        console.error('Error reading data from file:', error.message);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 
 app.post('/saveData', (req, res) => {
     const { direction, combinedValues } = req.body;

@@ -65,7 +65,7 @@
                 const directionContainer = document.getElementById('direction-container');
                 const directionElement = document.getElementById('direction');
 
-                directionContainer.innerHTML = `Command: <span id="direction">${data.direction}</span>`;
+                directionContainer.innerHTML = `<span style="font-size: 24px;">Command:</span> <span id="direction" style="font-size: 24px;">${data.direction}</span>`;
 
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error);
