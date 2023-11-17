@@ -68,10 +68,25 @@
             background-color: rgb(58, 175, 214);
             color: #fff;
             border: none;
-            padding: 5px 10px;
+            padding: 2.5px 7px;
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 3px;
+            margin-bottom: 1px;
+        }
+
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 80%;
+            width: auto;
+        }
+
+        @media screen and (max-width: 600px) {
+            .toast {
+                max-width: 90%;
+            }
         }
     </style>
     <!-- Include the script file -->
@@ -79,7 +94,8 @@
     <!-- Include Bootstrap JS and Popper.js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>       
@@ -91,6 +107,7 @@
     <div class="d-flex align-items-center justify-content-center">
         <div class="container custom-container border rounded text-center p-2 mt-3 m-3">
             <h1 style="font-size: 1.2rem;">Set Motor Speed</h1>
+            <h1 style="font-size: .7rem;">Speed must be in the range of 1 to 255</h1>
             <div class="container-fluid mt-2 d-flex justify-content-center align-items-center ">
                 <div class="custom-num">
                     <i class="fas fa-angle-up arr-up"></i>
@@ -135,6 +152,28 @@
         </div>
     </div>  
 
+    <!-- Single toast for both error and success messages -->
+    <!-- <div id="mainToast" class="toast position-fixed top-50 start-50 translate-middle" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+        <strong class="me-auto">Notification</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+        <span id="toastMessage"></span>
+        </div>
+    </div> -->
+        
+        <!-- Toast to display the status -->
+        <div id="mainToast" class="toast position-fixed top-50 start-50 translate-middle" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header text-secondary-emphasis">
+                <strong class="me-auto">Motor Speed</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" id="closeButton"></button>
+            </div>
+            <div class="toast-body" id="toastBody">
+                <!-- Toast content will be dynamically updated here -->
+            </div>
+        </div>
+        
     <script>
         const customNum = document.querySelectorAll('.custom-num');
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
@@ -202,26 +241,28 @@
         });
 
         saveSettingsBtn.addEventListener('click', () => {
-            let combinedValues = '';
-            customNum.forEach((num, index) => {
-                const numInput = num.querySelector('.num-input');
-                combinedValues += numInput.value;
-            });
+        let combinedValues = '';
+        customNum.forEach((num, index) => {
+            const numInput = num.querySelector('.num-input');
+            combinedValues += numInput.value;
+        });
 
-            if (parseInt(combinedValues) > 255 || parseInt(combinedValues) < 1) {
-                alert('Combined value must be between 1 and 255.');
-            } else {
-                console.log('Combined values:', combinedValues);
-                // You can use combinedValues as needed, for example, save it to a database.
+        if (parseInt(combinedValues) > 255 || parseInt(combinedValues) < 1) {
+            // Instead of alert, show the Bootstrap toast
+            toastBody.innerText = 'Speed must be in the range of 1 to 255.';
+            closeButton.style.display = 'block'; // Show the close button
+            document.getElementById('mainToast').classList.add('show');
+        } else {
+            console.log('Combined values:', combinedValues);
 
-                // Send combinedValues to the server
-                fetch('http://localhost:3000/saveData', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ combinedValues }),
-                })
+            // Send combinedValues to the server
+            fetch('http://localhost:3000/saveData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ combinedValues }),
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log('Server response:', data);
@@ -229,10 +270,28 @@
                 .catch(error => {
                     console.error('Error sending data to server:', error);
                 });
-            }
-        });
 
-        
+            toastBody.innerText = 'Speed has been updated.';
+            closeButton.style.display = 'none'; // Hide the close button
+            document.getElementById('mainToast').classList.add('show');
+
+            // Hide the toast after 2 seconds
+            setTimeout(() => {
+                document.getElementById('mainToast').classList.remove('show');
+            }, 1500);
+        }
+    });
+
+
+        // Updated showToast function to use Bootstrap classes
+        function showToast(message) {
+            const toast = new bootstrap.Toast(document.querySelector('.toast'), {
+                animation: true
+            });
+            document.getElementById('toastMessage').innerText = message;
+            toast.show();
+        }
     </script>
+
 </body>
 </html>

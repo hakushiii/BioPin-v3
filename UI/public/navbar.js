@@ -24,7 +24,7 @@ function createNavbar() {
 
   // Create an image element for the back button
   const backImage = document.createElement('img');
-  backImage.src = 'icons/left.png';
+  backImage.src = 'icons/back.png';
   backImage.alt = 'back'; // Add alternative text for accessibility
 
   // Set the width and height attributes for the image

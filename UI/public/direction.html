@@ -32,7 +32,8 @@
     <div class="container border rounded mt-3">
         <div class="text-center mt-3">
             <h1 style="font-size: 1.2rem;">Wheelchair Direction</h1>
-            <div id="direction-container" class="mt-4 mb-5 pb-3">Direction: <span id="direction"></span></div>
+            <img id="direction-image" src="" class="mt-3" alt="Direction Image" style="max-width: 100%;">
+            <div id="direction-container" class="mt-2 mb-4"></div>
         </div>
     </div>
 
@@ -44,40 +45,37 @@
     <!-- Insert the fetchData function here -->
     <script>
         async function fetchData() {
-            const filePath = 'direction.json';
-
+            const filePath = '../direction.json';
+    
             try {
-                // Fetch the JSON file
                 const response = await fetch(filePath);
-
-                // Check if the request was successful (status code 200)
+    
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-
-                // Parse the JSON response
+    
                 const data = await response.json();
-
-                // Now 'data' contains the parsed JSON
-                console.log(data);
-
-                // Display the command in the direction-container
+    
                 const directionContainer = document.getElementById('direction-container');
                 const directionElement = document.getElementById('direction');
-
-                directionContainer.innerHTML = `<span style="font-size: 24px;">Command:</span> <span id="direction" style="font-size: 24px;">${data.direction}</span>`;
-
+                const directionImageElement = document.getElementById('direction-image');
+    
+                directionContainer.innerHTML = `<span id="direction" style="font-size: 18px;">${data.direction}</span>`;
+    
+                if (directionImageElement) {
+                    directionImageElement.src = `icons/${data.direction.toLowerCase()}.png`;
+                } else {
+                    console.error('Image element not found');
+                }
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error);
             }
         }
-
-        // Call the function to fetch and handle the JSON data initially
+    
         fetchData();
-
-        // Set up a recurring interval to update the data
-        setInterval(fetchData, 1000); // Update every 1000 milliseconds (1 second)
+        setInterval(fetchData, 1000);
     </script>
+    
 </body>
 
 </html>
