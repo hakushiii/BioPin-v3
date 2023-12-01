@@ -1,9 +1,11 @@
 # IMPORTS
-
+import requests
 import serial
 import numpy as np
+import json
 import torch
 import collections
+import time
 
 import eeg as eg
 
@@ -84,16 +86,25 @@ def commandFunction(eog, eeg):
             while checker == 0:
 
                 if result.item() >= 0.7:
+                    direction = 'Rightward'
                     checker = 1
                     command = 3
-                if result.item() <= 0.3:
+                elif result.item() <= 0.3:
+                    direction = 'Leftward'
                     checker = 1
                     command = 2
-                if eeg.attention >= tresh_attention:
+                elif eeg.attention >= tresh_attention:
+                    direction = 'Forward'
                     checker = 1
                     command = 1
-                if eeg.attention < tresh_attention:
+                elif eeg.meditation >= tresh_attention:
+                    direction = 'Backward'
                     checker = 1
+                    command = 4
+                else:
+                    direction = 'Stop'
+                    checker = 1
+                    command = 0
 
             while checker == 1:
                 timer+=1
@@ -103,24 +114,73 @@ def commandFunction(eog, eeg):
                     timer = 0
                     command = 0
                 
-                return result, command
+                return queue_numpy, result, command, direction
 
 if __name__ == '__main__':
 
-    speed = '100'
-
-    eog = serial.Serial('/dev/tty.usbserial-1110', 9600, timeout=1)
-    eeg = eg.Headwear('/dev/tty.usbmodem2017_2_251')
-    #mtr = serial.Serial('/dev/tty.usbmodem11201', 9600, timeout=1)
+    is_connected = 0
 
     while True:
 
-        result, command = commandFunction(eog, eeg)
+        to_json = {
+                'is_connected': is_connected
+        }
+        json_object = json.dumps(to_json)
 
-        command_new = str(command) + ':' + speed
+        with open('UI/bt.json', 'w') as f:
+            f.write(json_object)
+            f.close()
 
-        print('EOG:', f'{result.item():.2f} | ', 'ATTENTION: ', f'{eeg.attention:2d} | ','COMMANND: ', command, f'|| {command_new}')
-        #try:
-        #    mtr.write(str(command).encode('utf-8'))
-        #except KeyboardInterrupt:
-        #    mtr.write('0'.encode('utf-8'))
+        if is_connected == 0:
+            try:
+                eog = serial.Serial('/dev/rfcomm0', 9600)
+                eeg = eg.Headwear('/dev/rfcomm1')
+                mtr = serial.Serial('/dev/ttyACM0', 9600)
+                print('Devices Connected')
+                is_connected = 1
+                time.sleep(1)
+            except:
+                is_connected = 0
+                print('Devices not Connected')
+                time.sleep(1)
+
+        elif is_connected == 1:
+            try:
+                eog.read()
+            except:
+                is_connected = 0
+                break
+
+            queue, result, command, direction = commandFunction(eog, eeg)
+
+            command_new = str(command) + ':' + speed
+
+            f = open('data.json')
+            data = json.load
+            speed = data['speed']
+            f.close()
+
+            to_json = {
+                'array': queue
+            }
+            json_object = json.dumps(to_json)
+
+            with open('UI/eog.json', 'w') as f:
+                f.write(json_object)
+                f.close()
+
+            to_json = {
+                'direction': direction
+            }
+            json_object = json.dumps(to_json)
+
+            with open('UI/direction.json', 'w') as f:
+                f.write(json_object)
+                f.close()
+
+            print('EOG:', f'{result.item():.2f} | ', 'ATTENTION: ', f'{eeg.attention:2d} | ',f'COMMANND: {command} : {speed}', f'|| {direction}')
+            
+            try:
+                mtr.write(str(command).encode('utf-8'))
+            except KeyboardInterrupt:
+                mtr.write('0'.encode('utf-8'))
