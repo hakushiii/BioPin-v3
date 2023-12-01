@@ -158,12 +158,14 @@ if __name__ == '__main__':
                 refresh2 = direction 
                 refresh = command
                 command = 0
+                direction = 'Stop'
             if (stay_command == True) and (count <= 3):
                 if eeg.attention > 55:
                     command = refresh
                     direction = refresh2
                 else:
                     command = 0
+                    direction = 'Stop'
                 count += 1
             elif (stay_command == True) and (count > 3):
                 command = 0
