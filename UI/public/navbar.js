@@ -31,6 +31,9 @@ function createNavbar() {
   backImage.width = 18;
   backImage.height = 18;
 
+  // Make the image non-draggable
+  backImage.draggable = false;
+
   // Center the image within the button
   backImage.style.display = 'block';
   backImage.style.margin = 'auto';
@@ -58,6 +61,9 @@ function createNavbar() {
   // Set the width and height attributes for resizing
   logoImage.width = 40;
   logoImage.height = 40;
+
+  // Make the image non-draggable
+  logoImage.draggable = false;
 
   // Add the image to the logo
   logo.appendChild(logoImage);
