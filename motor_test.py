@@ -1,6 +1,6 @@
 import serial
 
-mtr = serial.Serial('/dev/tty.usbmodem11101', 9600, timeout=.1)
+mtr = serial.Serial('/dev/ttyACM0', 9600)
 
 print('connected to', mtr)
 
@@ -13,7 +13,7 @@ while True:
             mtr.write(command.encode('utf-8'))
         except KeyboardInterrupt:
             print('no sent')
-            mtr.write('0'.encode('utf-8'))
+            mtr.write('0:0'.encode('utf-8'))
         
         val = mtr.readline()
         print(val)
