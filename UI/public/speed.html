@@ -28,7 +28,7 @@
     <div class="d-flex align-items-center justify-content-center">
         <div class="container custom-container border border-dark-subtle rounded text-center p-2 mt-3 mb-2 m-3">
             <h1 style="font-size: 1.2rem;">Set Motor Speed</h1>
-            <h1 style="font-size: .7rem;">Speed must be in the range of 1 to 255</h1>
+            <h1 style="font-size: .7rem;">Speed must be in the range of 1 to 100</h1>
             <div class="container-fluid mt-2 d-flex justify-content-center align-items-center ">
                 <div class="custom-num">
                     <i class="fas fa-angle-up arr-up"></i>
@@ -160,9 +160,9 @@
             combinedValues += numInput.value;
         });
 
-        if (parseInt(combinedValues) > 255 || parseInt(combinedValues) < 1) {
+        if (parseInt(combinedValues) > 100 || parseInt(combinedValues) < 1) {
             // Show the error toast
-            toastBody.innerText = 'Speed must be in the range of 1 to 255.';
+            toastBody.innerText = 'Speed must be in the range of 1 to 100.';
             closeButton.style.display = 'block'; // Show the close button
             document.getElementById('speedToast').classList.add('show');
         } else {
