@@ -18,8 +18,8 @@ header {
 .logo-img {
     max-width: 100%;
     height: auto;
-    width: 55px;
-    height: 55px;
+    width: 65px;
+    height: 65px;
 }
 
 .button-grid {
@@ -28,7 +28,7 @@ header {
 }
 
 .button-row {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .button-content {
@@ -39,14 +39,14 @@ header {
 }
 
 .custom-button {
-    width: 175px; /* Set a fixed width for the buttons */
-    height: 60px; /* Set a fixed height for the buttons */
+    width: 170px; /* Set a fixed width for the buttons */
+    height: 64px; /* Set a fixed height for the buttons */
     margin: 2px 5px;
     padding: 8px;
     text-align: center;
     background-color: #3498db;
     color: #fff;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 550;
     border: none;
     cursor: pointer;
