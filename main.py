@@ -25,14 +25,8 @@ if __name__ == '__main__':
     is_connected = 0
     while True:
 
-        to_json = {
-                'is_connected': is_connected
-        }
-        json_object = json.dumps(to_json)
-
-        with open('UI/bt.json', 'w') as f:
-            f.write(json_object)
-            f.close()
+        with open('UI/bt.json', 'w+') as f:
+            json.dump({'is_connected': is_connected}, f)
 
         if is_connected == 0:
             try:
@@ -53,19 +47,15 @@ if __name__ == '__main__':
                 is_connected = 0
                 break
 
-            to_json = {
-                'direction': direction
-            }
-            json_object = json.dumps(to_json)
+            with open('UI/eeg.json', 'w+') as f:
+                json.dump({'value': eeg.attention}, f)
 
-            with open('UI/direction.json', 'w') as f:
-                f.write(json_object)
-                f.close()
+            with open('UI/direction.json', 'w+') as f:
+                json.dump({'direction': direction}, f)
 
-            f = open('UI/data.json')
-            data = json.load(f)
-            speed = data['combinedValues']
-            f.close()
+            with open('UI/data.json') as f:
+                data = json.load(f)
+                speed = data['combinedValues']
 
             command_new = str(command) + ':' + str(speed)
 
