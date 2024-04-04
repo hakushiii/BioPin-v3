@@ -13,7 +13,7 @@
 
 <body>
      <!-- Logo -->
-    <div class="container text-center mt-1">
+    <div class="container text-center mt-4">
         <header class="mb-1">
             <img src="icons/biopin_logo2.png" alt="Biopin Logo" class="img-fluid logo-img" draggable="false">
         </header>
@@ -21,38 +21,29 @@
          <!-- 5 Buttons -->
         <div class="button-grid">
             <div class="button-row">
-                <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/eog')">
-                    <div class="button-content">
-                        <img src="icons\eye.png" alt="EOG Signals" class="img-fluid">
-                        <span>EOG Signals</span>
-                    </div>
-                </button>
-
-                <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/eeg')">
-                    <div class="button-content">
-                        <img src="icons/eeg.png" alt="EEG Signals" class="img-fluid">
-                        <span>EEG Signals</span>
-                    </div>
-                </button>
-            </div>
-
-            <div class="button-row">
-                <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/speed')">
-                    <div class="button-content">
-                        <img src="icons/power.png" alt="Speed" class="img-fluid">
-                        <span>Speed</span>
-                    </div>
-                </button>
-
                 <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/direction')">
                     <div class="button-content">
                         <img src="icons/direction.png" alt="Direction" class="img-fluid">
                         <span>Direction</span>
                     </div>
                 </button>
+
+                <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/speed')">
+                    <div class="button-content">
+                        <img src="icons/power.png" alt="Speed" class="img-fluid">
+                        <span>Speed</span>
+                    </div>
+                </button>
             </div>
 
             <div class="button-row">
+                <button class="btn btn-primary btn-block custom-button" onclick="redirectToPage('/eeg')">
+                    <div class="button-content">
+                        <img src="icons/eeg.png" alt="EEG Signals" class="img-fluid">
+                        <span>EEG Signals</span>
+                    </div>
+                </button>
+
                 <button class="btn btn-primary btn-block custom-button last-button" onclick="redirectToPage('/help')">
                     <div class="button-content">
                         <img src="icons/help.png" alt="About" class="img-fluid">
@@ -60,8 +51,19 @@
                     </div>
                 </button>
             </div>
+
+
+           <!-- <div class="button-row">
+                <button class="btn btn-primary btn-block custom-button last-button" onclick="redirectToPage('/help')">
+                    <div class="button-content">
+                        <img src="icons/help.png" alt="About" class="img-fluid">
+                        <span>Help</span>
+                    </div>
+                </button>
+            </div> -->
         </div>
     </div>
+          
 
     <!-- Toast -->
     <div class="toast" id="headgearToast" role="alert" aria-live="assertive" aria-atomic="true">
