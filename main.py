@@ -20,6 +20,11 @@ def commandFunction(eog, eeg):
                 
         return command, direction
 
+def mapValues(val):
+    return int(
+        max(0, min(100, val)) / 100 * 255
+    )
+
 if __name__ == '__main__':
 
     is_connected = 0
@@ -57,8 +62,7 @@ if __name__ == '__main__':
                 data = json.load(f)
                 speed = data['combinedValues']
 
-            command_new = str(command) + ':' + str(speed)
-
+            command_new = str(command) + ':' + str(mapValues(speed))
 
             print(f'ATTENTION: {eeg.attention:2d} |', 
                   f'POOR_SIGNAL: {eeg.poor_signal} ||',
