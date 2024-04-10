@@ -10,7 +10,7 @@ import eeg as eg
 treshold = None
 
 # COMMANDS
-def commandFunction(eog, eeg):
+def commandFunction(eeg):
 
     while eeg != None:
 
