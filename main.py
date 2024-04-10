@@ -25,7 +25,7 @@ def commandFunction(eeg):
 
 def mapValues(val):
     return int(
-        max(0, min(100, val)) / 100 * 255
+        max(0, min(100, (int(val))) / 100 * 255
     )
 
 if __name__ == '__main__':
