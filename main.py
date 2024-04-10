@@ -1,6 +1,9 @@
 # MODULES
 import serial, json, time
 
+from datetime import datetime as dt
+import csv
+
 import eeg as eg
 
 # SETTIGNS
@@ -26,6 +29,12 @@ def mapValues(val):
     )
 
 if __name__ == '__main__':
+    start_time = dt.now().strftime('%H:%M:%S')
+
+    with open(f'BioPin-v3 {start_time}.csv', 'w+') as f:
+        header = ['TIME','ATTENTION','POOR SIGNAL','OUTPUT COMMAND','DIRECTION']
+        writer = csv.writer(f, delimiter=',', lineterminator='\n')
+        writer.writerow(header)
 
     is_connected = 0
     while True:
@@ -68,7 +77,19 @@ if __name__ == '__main__':
                   f'POOR_SIGNAL: {eeg.poor_signal} ||',
                   f'COMMANND: {command_new}',
                   f'|| {direction}')
-            
+
+            data = []
+            with open(f'BioPin-v3 {start_time}.csv', 'a+') as f:
+                writer = csv.writer(f, delimiter=',', lineterminator='\n')
+                data.append(dt.now().strftime('%H:%M:%S'))
+                data.append(eeg.attention)
+                data.append(eeg.poor_signal)
+                data.append(command_new)
+                data.append(direction)
+                writer.writerow(data)
+                data = []
+
+            time.sleep(1)
             try:
                 if command != 0:
                     mtr.write(str(command_new).encode('utf-8'))
