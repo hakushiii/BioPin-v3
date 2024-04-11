@@ -30,7 +30,7 @@ def mapValues(val):
     )
 
 if __name__ == '__main__':
-    start_time = dt.now().strftime('%H:%M:%S')
+    starttime = dt.now().strftime('%Y-%m-%d_%H:%M:%S')
 
     with open(f'BioPin-v3 {start_time}.csv', 'w+') as f:
         header = ['TIME','ATTENTION','POOR SIGNAL','OUTPUT COMMAND','DIRECTION']
@@ -81,7 +81,7 @@ if __name__ == '__main__':
                   f'|| {direction}')
 
             data = []
-            with open(f'BioPin-v3 {start_time}.csv', 'a+') as f:
+            with open(f'BioPin-v3_{start_time}.csv', 'a+') as f:
                 writer = csv.writer(f, delimiter=',', lineterminator='\n')
                 data.append(dt.now().strftime('%H:%M:%S'))
                 data.append(eeg.attention)
