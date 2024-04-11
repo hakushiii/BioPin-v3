@@ -26,6 +26,7 @@ def commandFunction(eeg):
 def mapValues(val):
     return int(
         max(0, min(100, (int(val))) / 100 * 255
+        )
     )
 
 if __name__ == '__main__':
@@ -73,7 +74,8 @@ if __name__ == '__main__':
 
             command_new = str(command) + ':' + str(mapValues(speed))
 
-            print(f'ATTENTION: {eeg.attention:2d} |', 
+            print(f'TIME: {dt.now().strftime('%H:%M:%S')} |'
+                  f'ATTENTION: {eeg.attention:2d} |', 
                   f'POOR_SIGNAL: {eeg.poor_signal} ||',
                   f'COMMANND: {command_new}',
                   f'|| {direction}')
