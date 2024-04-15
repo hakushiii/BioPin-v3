@@ -30,7 +30,7 @@ def mapValues(val):
     )
 
 if __name__ == '__main__':
-    starttime = dt.now().strftime('%Y-%m-%d_%H:%M:%S')
+    start＿time = dt.now().strftime('%Y-%m-%d_%H:%M:%S')
 
     with open(f'BioPin-v3 {start_time}.csv', 'w+') as f:
         header = ['TIME','ATTENTION','POOR SIGNAL','OUTPUT COMMAND','DIRECTION']
